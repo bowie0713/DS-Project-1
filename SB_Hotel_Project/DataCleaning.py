@@ -362,9 +362,13 @@ def data_cleaning():
     df2 = df2.drop(axis = 0, index = drop)
     dict = {"5.0": 9.5, "4.0": 9.0, "3.0": 8.5, "2.0": 8.0, "1.0": 7.5, "0.0": np.nan} 
     df2['hotel_rating'] = df2['hotel_rating'].fillna(df2['hotel_review'].astype(str).map(dict))# fill in hotel_rating missing values based on hotel_review through mapping
-
+    # fill in missing values based on forward fill and backward fill, finding values based on grouping and check if same results show up 
+    # in previous data. (This happens because of some data loss during scraping stage)
+    df2['hotel_rating'] = df2.groupby("hotel_name")['hotel_rating'].ffill().bfill()
+    df2['Number_review'] = df2.groupby("hotel_name")['Number_review'].ffill().bfill() 
+    df2 = df2.reset_index(drop=True)
     return df2
-print(data_cleaning())
+# print(data_cleaning())
 
 
 

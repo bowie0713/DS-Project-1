@@ -1,4 +1,5 @@
 from DataCleaning import data_cleaning
+import joblib
 
 df = data_cleaning()
 def hotelmodel(df):
@@ -36,5 +37,7 @@ def hotelmodel(df):
     #base_score: inverse of the number of classes
     xgb_base_model.fit(X_train, y_train)
     base_predictions2 = xgb_base_model.predict(X_test)
-    return base_predictions2
 
+    joblib.dump(xgb_base_model, 'saved_model.pkl')
+    #return base_predictions2
+hotelmodel(df)
